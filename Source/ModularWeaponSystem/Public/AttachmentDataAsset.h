@@ -7,6 +7,7 @@
 
 #include "CoreMinimal.h"
 #include "Engine/DataAsset.h"
+#include "Engine/EngineTypes.h"
 #include "AttachmentDataAsset.generated.h"
 
 UENUM()
@@ -47,6 +48,24 @@ private:
 	FVector VectorValue;
 };
 
+USTRUCT()
+struct FAttachmentRules
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditAnywhere)
+		EAttachmentRule Location = EAttachmentRule::SnapToTarget;
+
+	UPROPERTY(EditAnywhere)
+		EAttachmentRule Rotation = EAttachmentRule::KeepWorld;
+	
+	UPROPERTY(EditAnywhere)
+		EAttachmentRule Scale = EAttachmentRule::KeepWorld;
+	
+};
+
+
+
 UCLASS()
 class MODULARWEAPONSYSTEM_API UAttachmentDataAsset : public UDataAsset
 {
@@ -64,7 +83,10 @@ public:
 
 	UPROPERTY(EditAnywhere)
 	FName SocketName;
-	
+
+	UPROPERTY(EditAnywhere)
+	FAttachmentRules AttachmentRules;
+
 	UPROPERTY(EditAnywhere, Category = "Custom Data")
 	TMap<FString, FDataEntry> Data;
 	

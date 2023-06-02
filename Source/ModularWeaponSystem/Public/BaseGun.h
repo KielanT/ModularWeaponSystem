@@ -26,12 +26,19 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	UFUNCTION()
+	void ClearAttachments();
+	
 private:
 	void SetupAttachments();
+
 	
 private:
 	UPROPERTY(EditAnywhere)
 		TObjectPtr<USkeletalMeshComponent> SkeletalMeshComponent;
+
+	UPROPERTY()
+	TArray<TObjectPtr<UStaticMeshComponent>> AttachmentComponents;
 	
 	UPROPERTY(EditAnywhere)
 		TObjectPtr<UGunDataAsset> GunDataAsset;

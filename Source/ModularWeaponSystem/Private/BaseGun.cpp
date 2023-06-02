@@ -22,7 +22,7 @@ void ABaseGun::BeginPlay()
 {
 	Super::BeginPlay();
 
-	
+	SetupAttachments();
 	
 	// if(BarrelData)
 	// {
@@ -43,7 +43,7 @@ void ABaseGun::OnConstruction(const FTransform& Transform)
 {
 	Super::OnConstruction(Transform);
 	
-	SetupAttachments();
+	
 }
 
 // Called every frame
@@ -53,12 +53,27 @@ void ABaseGun::Tick(float DeltaTime)
 
 }
 
+void ABaseGun::ClearAttachments()
+{
+	if(!AttachmentComponents.IsEmpty())
+	{
+		
+		UE_LOG(LogTemp, Warning, TEXT("Cleared Attachments called"));
+		for(auto& comp : AttachmentComponents)
+		{
+			comp->UnregisterComponent();
+		}
+		AttachmentComponents.Empty();
+	}
+}
+
 void ABaseGun::SetupAttachments()
 {
 	if(GunDataAsset)
 	{
 		if(GunDataAsset->SkeletalMesh)
 			SkeletalMeshComponent->SetSkeletalMesh(GunDataAsset->SkeletalMesh);
+
 		
 		for(auto& elem : GunDataAsset->SelectedAttachments)
 		{
@@ -68,12 +83,14 @@ void ABaseGun::SetupAttachments()
 				Component->SetStaticMesh(val->Mesh);
 
 				FAttachmentTransformRules rules =  FAttachmentTransformRules::KeepWorldTransform;
-				rules.LocationRule = EAttachmentRule::SnapToTarget;
-				rules.RotationRule = EAttachmentRule::KeepWorld;
+				rules.LocationRule = val->AttachmentRules.Location;
+				rules.RotationRule = val->AttachmentRules.Rotation;
+				rules.ScaleRule = val->AttachmentRules.Scale;
 				
 				Component->AttachToComponent(SkeletalMeshComponent, rules, val->SocketName);
 				Component->RegisterComponent();
-				//UE_LOG(LogTemp, Warning, TEXT("AttachmentName %s"), *val->Name.ToString());
+
+				AttachmentComponents.Add(Component);
 			}
 		}
 
