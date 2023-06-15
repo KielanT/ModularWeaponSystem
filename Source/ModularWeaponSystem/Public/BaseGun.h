@@ -28,6 +28,8 @@ public:
 
 	UFUNCTION()
 	void ClearAttachments();
+
+	void SetGunAsset(TObjectPtr<UGunDataAsset> InGunAsset);
 	
 private:
 	void SetupAttachments();
@@ -38,7 +40,7 @@ private:
 		TObjectPtr<USkeletalMeshComponent> SkeletalMeshComponent;
 
 	UPROPERTY()
-	TArray<TObjectPtr<UStaticMeshComponent>> AttachmentComponents;
+		TArray<TObjectPtr<UStaticMeshComponent>> AttachmentComponents;
 	
 	UPROPERTY(EditAnywhere)
 		TObjectPtr<UGunDataAsset> GunDataAsset;

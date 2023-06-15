@@ -67,6 +67,13 @@ void ABaseGun::ClearAttachments()
 	}
 }
 
+void ABaseGun::SetGunAsset(TObjectPtr<UGunDataAsset> InGunAsset)
+{
+	GunDataAsset = InGunAsset;
+	ClearAttachments();
+	SetupAttachments();
+}
+
 void ABaseGun::SetupAttachments()
 {
 	if(GunDataAsset)

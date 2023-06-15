@@ -7,6 +7,7 @@
 #include "ExampleUserWidget.generated.h"
 
 class UGunUserWidget;
+class ABaseGun;
 /**
  * 
  */
@@ -24,7 +25,8 @@ private:
 	void ShowGuns();
 
 	UFUNCTION()
-	void SetBaseGun();
+	void SetBaseGun(UGunDataAsset* InGunAsset);
+	
 private:
 	
 	UPROPERTY(meta = (BindWidget))
@@ -35,4 +37,7 @@ private:
 
 	UPROPERTY(EditAnywhere)
 		TSubclassOf<UGunUserWidget> GunWidget;
+
+	UPROPERTY()
+		TObjectPtr<ABaseGun> BaseGun;
 };

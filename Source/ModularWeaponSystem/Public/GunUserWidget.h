@@ -6,7 +6,7 @@
 #include "Blueprint/UserWidget.h"
 #include "GunUserWidget.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnSelecteGunSignature);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnSelecteGunSignature, UGunDataAsset*, InGunAsset);
 
 class UTextBlock;
 class UButton;
@@ -19,8 +19,12 @@ class MODULARWEAPONSYSTEM_API UGunUserWidget : public UUserWidget
 protected:
 	virtual bool Initialize() override;
 
-private:
 
+
+public:	
+	void SetAsset(TObjectPtr<UGunDataAsset> InGunAsset);
+
+private:
 	UFUNCTION()
 	void OnClicked();
 
@@ -32,4 +36,8 @@ public:
 	TObjectPtr<UButton> SelectedButton;
 
 	FOnSelecteGunSignature OnSelectedDelegate;
+
+private:
+	UPROPERTY()
+		TObjectPtr<UGunDataAsset> GunAsset;
 };

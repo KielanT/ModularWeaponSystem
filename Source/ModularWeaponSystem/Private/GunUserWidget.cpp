@@ -14,7 +14,14 @@ bool UGunUserWidget::Initialize()
 	return true;
 }
 
+void UGunUserWidget::SetAsset(TObjectPtr<UGunDataAsset> InGunAsset)
+{
+	GunAsset = InGunAsset;
+}
+
 void UGunUserWidget::OnClicked()
 {
-	OnSelectedDelegate.Broadcast();
+	OnSelectedDelegate.Broadcast(GunAsset);
 }
+
+

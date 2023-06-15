@@ -3,11 +3,13 @@
 
 #include "ExampleUserWidget.h"
 
+#include "BaseGun.h"
 #include "GunUserWidget.h"
 #include "GunDataAsset.h"
 #include "Components/TextBlock.h"
 #include "Components/VerticalBox.h"
 #include "AssetRegistry/AssetRegistryModule.h"
+#include "Kismet/GameplayStatics.h"
 
 bool UExampleUserWidget::Initialize()
 {
@@ -20,6 +22,8 @@ void UExampleUserWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
 
+	BaseGun = Cast<ABaseGun>(UGameplayStatics::GetActorOfClass(GetWorld(), ABaseGun::StaticClass()));
+	
 	ShowGuns();
 }
 
@@ -37,8 +41,8 @@ void UExampleUserWidget::ShowGuns()
 		{
 			auto widget = CreateWidget<UGunUserWidget>(GetWorld(), GunWidget);
 			widget->OnSelectedDelegate.AddDynamic(this, &UExampleUserWidget::SetBaseGun);
-			
 			auto Data = Cast<UGunDataAsset>(asset.GetAsset());
+			widget->SetAsset(Data);
 			widget->NameText->SetText(FText::FromString(Data->Name));
 			GunList->AddChild(widget);
 			Index++;
@@ -46,6 +50,12 @@ void UExampleUserWidget::ShowGuns()
 	}
 }
 
-void UExampleUserWidget::SetBaseGun()
+void UExampleUserWidget::SetBaseGun(UGunDataAsset* InGunAsset)
 {
+	if(InGunAsset)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Set base gun name: %s"), *InGunAsset->Name);
+
+		BaseGun->SetGunAsset(InGunAsset);
+	}
 }
